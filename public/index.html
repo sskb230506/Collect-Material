@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>LeetCode 2000+ Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d0d0f;
+  --bg2:#13131a;
+  --bg3:#1a1a24;
+  --bg4:#22222f;
+  --border:#2a2a3a;
+  --border2:#383854;
+  --text:#e8e8f0;
+  --text2:#9090b0;
+  --text3:#606078;
+  --accent:#6c63ff;
+  --accent2:#4ade80;
+  --accent3:#f59e0b;
+  --red:#f87171;
+  --easy:#4ade80;
+  --med:#f59e0b;
+  --hard:#f87171;
+  --radius:10px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh;line-height:1.5}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+input,textarea,select,button{font-family:inherit}
+
+/* ── HEADER ── */
+.header{
+  background:linear-gradient(135deg,#0d0d0f 0%,#13131a 50%,#1a0a2e 100%);
+  border-bottom:1px solid var(--border);
+  padding:2rem 2rem 1.5rem;
+  position:sticky;top:0;z-index:100;
+}
+.header-top{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.2rem}
+.logo{font-size:1.6rem;font-weight:800;letter-spacing:-1px;background:linear-gradient(135deg,#6c63ff,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo span{-webkit-text-fill-color:#4ade80}
+.subtitle{font-size:.8rem;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-left:auto}
+
+/* ── STAT CARDS ── */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:.6rem;margin-bottom:1.2rem}
+.stat{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:.8rem 1rem;text-align:center;transition:border-color .2s}
+.stat:hover{border-color:var(--border2)}
+.stat-n{font-size:1.6rem;font-weight:800;line-height:1}
+.stat-l{font-size:.65rem;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-top:.3rem;font-family:'JetBrains Mono',monospace}
+#stat-rating .stat-n{background:linear-gradient(135deg,#6c63ff,#4ade80);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.rating-bar-wrap{margin:.6rem 0 0}
+.rating-bar-track{height:6px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.rating-bar-fill{height:100%;background:linear-gradient(90deg,#6c63ff,#4ade80);border-radius:3px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+
+/* ── TOOLBAR ── */
+.toolbar{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+.filter-btn{padding:.35rem .9rem;border-radius:20px;font-size:.75rem;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text2);transition:all .15s;letter-spacing:.03em}
+.filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.search-input{padding:.38rem .9rem;border-radius:20px;font-size:.78rem;background:var(--bg2);border:1px solid var(--border);color:var(--text);outline:none;width:200px;transition:border-color .2s}
+.search-input:focus{border-color:var(--accent)}
+.search-input::placeholder{color:var(--text3)}
+.reset-btn{margin-left:auto;padding:.35rem .9rem;border-radius:20px;font-size:.75rem;font-weight:600;cursor:pointer;border:1px solid #3f2020;background:transparent;color:var(--red);transition:all .15s}
+.reset-btn:hover{background:#3f2020}
+
+/* ── MAIN CONTENT ── */
+.main{max-width:1200px;margin:0 auto;padding:1.5rem 1.5rem 4rem}
+
+/* ── SECTION ── */
+.section{margin-bottom:1.2rem;border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .2s}
+.section:hover{border-color:var(--border2)}
+.sec-header{
+  display:flex;align-items:center;gap:.8rem;padding:.85rem 1.1rem;
+  cursor:pointer;user-select:none;background:var(--bg2);
+  transition:background .15s;
+}
+.sec-header:hover{background:var(--bg3)}
+.sec-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.sec-title{font-size:.9rem;font-weight:700;flex:1}
+.sec-count{font-size:.72rem;color:var(--text3);font-family:'JetBrains Mono',monospace;white-space:nowrap}
+.sec-prog{display:flex;align-items:center;gap:.5rem}
+.sec-prog-track{width:70px;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.sec-prog-fill{height:100%;border-radius:2px;transition:width .4s}
+.sec-chevron{color:var(--text3);font-size:.7rem;transition:transform .2s}
+.sec-body{border-top:1px solid var(--border)}
+
+/* ── TABLE ── */
+.prob-table{width:100%;border-collapse:collapse}
+.prob-table th{
+  font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--text3);padding:.55rem .9rem;text-align:left;
+  border-bottom:1px solid var(--border);background:var(--bg2);
+  font-family:'JetBrains Mono',monospace;font-weight:600;
+}
+.prob-table td{padding:.6rem .9rem;border-bottom:1px solid var(--border);font-size:.82rem;vertical-align:middle}
+.prob-table tr:last-child td{border-bottom:none}
+.prob-table tr.solved td{opacity:.55}
+.prob-table tr:hover td{background:var(--bg3)}
+.prob-table tr.solved:hover td{background:var(--bg3)}
+
+/* checkbox */
+.chk-cell{width:32px;text-align:center}
+input[type=checkbox]{
+  width:16px;height:16px;cursor:pointer;
+  accent-color:var(--accent);border-radius:4px;
+}
+
+/* id */
+.prob-id{font-family:'JetBrains Mono',monospace;color:var(--text3);font-size:.75rem;width:46px}
+
+/* name */
+.prob-name a{color:var(--text);font-weight:600;transition:color .15s}
+.prob-name a:hover{color:var(--accent);text-decoration:none}
+
+/* diff badge */
+.diff{display:inline-block;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:20px;font-family:'JetBrains Mono',monospace;letter-spacing:.04em}
+.diff-E{background:#052e16;color:var(--easy)}
+.diff-M{background:#451a03;color:var(--med)}
+.diff-H{background:#450a0a;color:var(--hard)}
+
+/* rating */
+.rating-cell{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text3);width:56px}
+
+/* tags */
+.tags{display:flex;flex-wrap:wrap;gap:4px}
+.tag{font-size:.62rem;padding:2px 7px;border-radius:20px;background:var(--bg4);color:var(--text3);font-family:'JetBrains Mono',monospace;border:1px solid var(--border);cursor:pointer;transition:all .15s}
+.tag:hover{border-color:var(--accent);color:var(--accent)}
+
+/* note icon */
+.note-btn{background:none;border:none;cursor:pointer;color:var(--text3);font-size:.85rem;padding:2px 5px;border-radius:4px;transition:color .15s}
+.note-btn:hover{color:var(--accent2)}
+.note-btn.has-note{color:var(--accent3)}
+
+/* ── NOTE MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:999;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:1.5rem;width:min(500px,90vw);display:flex;flex-direction:column;gap:1rem}
+.modal h3{font-size:1rem;font-weight:700;color:var(--text)}
+.modal textarea{background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:.7rem;font-size:.85rem;resize:vertical;min-height:120px;outline:none;font-family:'JetBrains Mono',monospace;transition:border-color .2s}
+.modal textarea:focus{border-color:var(--accent)}
+.modal-actions{display:flex;gap:.5rem;justify-content:flex-end}
+.btn-save{padding:.4rem 1.1rem;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:.82rem;font-weight:700;transition:opacity .15s}
+.btn-save:hover{opacity:.85}
+.btn-cancel{padding:.4rem 1.1rem;background:transparent;color:var(--text2);border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:.82rem;font-weight:600}
+.btn-cancel:hover{border-color:var(--border2)}
+
+/* ── EMPTY STATE ── */
+.empty{text-align:center;padding:3rem;color:var(--text3);font-size:.9rem}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="logo">LC<span>2000</span></div>
+    <div class="subtitle">1813 → 2000+ Rating Roadmap · 240 Problems</div>
+  </div>
+
+  <div class="stats">
+    <div class="stat" id="stat-solved"><div class="stat-n" id="n-solved">0</div><div class="stat-l">Solved</div></div>
+    <div class="stat"><div class="stat-n" id="n-total">240</div><div class="stat-l">Total</div></div>
+    <div class="stat"><div class="stat-n" id="n-pct">0%</div><div class="stat-l">Progress</div></div>
+    <div class="stat" id="stat-rating"><div class="stat-n" id="n-rating">1813</div><div class="stat-l">Est. Rating</div></div>
+    <div class="stat"><div class="stat-n" id="n-easy" style="color:var(--easy)">0</div><div class="stat-l">Easy</div></div>
+    <div class="stat"><div class="stat-n" id="n-med" style="color:var(--med)">0</div><div class="stat-l">Medium</div></div>
+    <div class="stat"><div class="stat-n" id="n-hard" style="color:var(--hard)">0</div><div class="stat-l">Hard</div></div>
+  </div>
+
+  <div class="rating-bar-wrap">
+    <div class="rating-bar-track"><div class="rating-bar-fill" id="rating-bar" style="width:0%"></div></div>
+  </div>
+
+  <br/>
+  <div class="toolbar">
+    <button class="filter-btn active" data-f="all">All</button>
+    <button class="filter-btn" data-f="E">Easy</button>
+    <button class="filter-btn" data-f="M">Medium</button>
+    <button class="filter-btn" data-f="H">Hard</button>
+    <button class="filter-btn" data-f="unsolved">Unsolved</button>
+    <button class="filter-btn" data-f="solved">Solved</button>
+    <button class="filter-btn" data-f="1800">≥ 1800</button>
+    <button class="filter-btn" data-f="1900">≥ 1900</button>
+    <button class="filter-btn" data-f="2000">≥ 2000</button>
+    <input class="search-input" id="search" placeholder="🔍  search name / tag / #id" />
+    <button class="reset-btn" id="reset-btn">Reset All</button>
+  </div>
+</div>
+
+<div class="main" id="main"></div>
+
+<!-- Note Modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <h3 id="modal-title">Notes</h3>
+    <textarea id="modal-text" placeholder="Write your approach, complexity notes, gotchas..."></textarea>
+    <div class="modal-actions">
+      <button class="btn-cancel" id="modal-cancel">Cancel</button>
+      <button class="btn-save" id="modal-save">Save</button>
+    </div>
+  </div>
+</div>
+
+<script src="problems.js"></script>
+<script>
+const API = '';
+let state = { solved: [], notes: {}, timestamps: {} };
+let filter = 'all';
+let searchQ = '';
+let modalId = null;
+let collapsed = {};
+
+// ── API calls ────────────────────────────────────────────────────────────────
+
+async function apiGet(path) {
+  const r = await fetch(API + path);
+  return r.json();
+}
+async function apiPost(path, body) {
+  const r = await fetch(API + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  return r.json();
+}
+async function apiPatch(path, body) {
+  const r = await fetch(API + path, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  return r.json();
+}
+async function apiDelete(path) {
+  const r = await fetch(API + path, { method: 'DELETE' });
+  return r.json();
+}
+
+// ── load ─────────────────────────────────────────────────────────────────────
+
+async function load() {
+  try {
+    const data = await apiGet('/api/progress');
+    state = data;
+  } catch (e) {
+    console.warn('API not reachable, running in offline mode:', e.message);
+    state = { solved: [], notes: {}, timestamps: {} };
+  }
+  render();
+}
+
+// ── stats ────────────────────────────────────────────────────────────────────
+
+function updateStats() {
+  const total = PROBLEMS.reduce((a, s) => a + s.items.length, 0);
+  const done = state.solved.length;
+  const pct = Math.round((done / total) * 100);
+  const rating = Math.min(2100, Math.round(1813 + done * (290 / total)));
+  const easy = PROBLEMS.flatMap(s => s.items).filter(p => state.solved.includes(p.id) && p.d === 'E').length;
+  const med  = PROBLEMS.flatMap(s => s.items).filter(p => state.solved.includes(p.id) && p.d === 'M').length;
+  const hard = PROBLEMS.flatMap(s => s.items).filter(p => state.solved.includes(p.id) && p.d === 'H').length;
+
+  document.getElementById('n-solved').textContent = done;
+  document.getElementById('n-total').textContent = total;
+  document.getElementById('n-pct').textContent = pct + '%';
+  document.getElementById('n-rating').textContent = rating;
+  document.getElementById('n-easy').textContent = easy;
+  document.getElementById('n-med').textContent = med;
+  document.getElementById('n-hard').textContent = hard;
+  document.getElementById('rating-bar').style.width = Math.min(100, pct * 1.4) + '%';
+}
+
+// ── render ───────────────────────────────────────────────────────────────────
+
+function slugify(name) {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
+function matchFilter(p) {
+  if (filter === 'E' && p.d !== 'E') return false;
+  if (filter === 'M' && p.d !== 'M') return false;
+  if (filter === 'H' && p.d !== 'H') return false;
+  if (filter === 'solved' && !state.solved.includes(p.id)) return false;
+  if (filter === 'unsolved' && state.solved.includes(p.id)) return false;
+  if (filter === '1800' && p.r < 1800) return false;
+  if (filter === '1900' && p.r < 1900) return false;
+  if (filter === '2000' && p.r < 2000) return false;
+  if (searchQ) {
+    const q = searchQ.toLowerCase();
+    const matchName = p.n.toLowerCase().includes(q);
+    const matchId = String(p.id).includes(q);
+    const matchTag = p.t.some(t => t.toLowerCase().includes(q));
+    if (!matchName && !matchId && !matchTag) return false;
+  }
+  return true;
+}
+
+function render() {
+  updateStats();
+  const main = document.getElementById('main');
+  main.innerHTML = '';
+  let totalVisible = 0;
+
+  PROBLEMS.forEach((sec, si) => {
+    const visible = sec.items.filter(matchFilter);
+    if (!visible.length) return;
+    totalVisible += visible.length;
+
+    const done = visible.filter(p => state.solved.includes(p.id)).length;
+    const pct = Math.round((done / visible.length) * 100);
+    const isOpen = !collapsed[si];
+
+    const div = document.createElement('div');
+    div.className = 'section';
+
+    div.innerHTML = `
+      <div class="sec-header" onclick="toggleSection(${si})">
+        <div class="sec-dot" style="background:${sec.color}"></div>
+        <div class="sec-title">${sec.section}</div>
+        <div class="sec-prog">
+          <div class="sec-prog-track"><div class="sec-prog-fill" style="width:${pct}%;background:${sec.color}"></div></div>
+          <div class="sec-count">${done}/${visible.length}</div>
+        </div>
+        <div class="sec-chevron" id="chev-${si}">${isOpen ? '▼' : '▶'}</div>
+      </div>
+      ${isOpen ? `
+      <div class="sec-body">
+        <table class="prob-table">
+          <thead><tr>
+            <th class="chk-cell"></th>
+            <th>#</th>
+            <th>Problem</th>
+            <th>Diff</th>
+            <th>Rating</th>
+            <th>Tags</th>
+            <th>Note</th>
+          </tr></thead>
+          <tbody>
+            ${visible.map(p => {
+              const isSolved = state.solved.includes(p.id);
+              const hasNote = !!(state.notes && state.notes[String(p.id)]);
+              return `<tr class="${isSolved ? 'solved' : ''}" id="row-${si}-${p.id}">
+                <td class="chk-cell">
+                  <input type="checkbox" ${isSolved ? 'checked' : ''} onchange="toggleSolve(${p.id}, this.checked)"/>
+                </td>
+                <td class="prob-id">${p.id}</td>
+                <td class="prob-name">
+                  <a href="https://leetcode.com/problems/${slugify(p.n)}/" target="_blank" rel="noopener">${p.n}</a>
+                </td>
+                <td><span class="diff diff-${p.d}">${p.d === 'E' ? 'Easy' : p.d === 'M' ? 'Med' : 'Hard'}</span></td>
+                <td class="rating-cell">${p.r}</td>
+                <td><div class="tags">${p.t.map(t => `<span class="tag" onclick="searchTag('${t}')">${t}</span>`).join('')}</div></td>
+                <td><button class="note-btn ${hasNote ? 'has-note' : ''}" onclick="openNote(${p.id}, '${p.n.replace(/'/g, "\\'")}')">📝</button></td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>` : ''}
+    `;
+    main.appendChild(div);
+  });
+
+  if (!totalVisible) {
+    main.innerHTML = '<div class="empty">No problems match your filter. Try adjusting search or filters.</div>';
+  }
+}
+
+// ── actions ──────────────────────────────────────────────────────────────────
+
+function toggleSection(si) {
+  collapsed[si] = !collapsed[si];
+  render();
+}
+
+async function toggleSolve(id, solved) {
+  const res = await apiPost('/api/progress/solve', { id, solved });
+  state.solved = res.solved;
+  updateStats();
+  const row = document.getElementById('row-' + id);
+  if (row) row.className = solved ? 'solved' : '';
+}
+
+function searchTag(t) {
+  document.getElementById('search').value = t;
+  searchQ = t;
+  render();
+}
+
+// ── note modal ───────────────────────────────────────────────────────────────
+
+function openNote(id, name) {
+  modalId = id;
+  document.getElementById('modal-title').textContent = `Notes — #${id} ${name}`;
+  document.getElementById('modal-text').value = (state.notes && state.notes[String(id)]) || '';
+  document.getElementById('modal').classList.add('open');
+}
+
+document.getElementById('modal-cancel').onclick = () => {
+  document.getElementById('modal').classList.remove('open');
+  modalId = null;
+};
+
+document.getElementById('modal').onclick = e => {
+  if (e.target === document.getElementById('modal')) {
+    document.getElementById('modal').classList.remove('open');
+    modalId = null;
+  }
+};
+
+document.getElementById('modal-save').onclick = async () => {
+  if (!modalId) return;
+  const note = document.getElementById('modal-text').value;
+  await apiPatch('/api/progress/note', { id: modalId, note });
+  if (!state.notes) state.notes = {};
+  state.notes[String(modalId)] = note;
+  document.getElementById('modal').classList.remove('open');
+  render();
+  modalId = null;
+};
+
+// ── filter / search ──────────────────────────────────────────────────────────
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    filter = btn.dataset.f;
+    render();
+  });
+});
+
+document.getElementById('search').addEventListener('input', e => {
+  searchQ = e.target.value.trim();
+  render();
+});
+
+document.getElementById('reset-btn').onclick = async () => {
+  if (!confirm('Reset ALL progress? This cannot be undone.')) return;
+  await apiDelete('/api/progress');
+  state = { solved: [], notes: {}, timestamps: {} };
+  render();
+};
+
+// ── init ──────────────────────────────────────────────────────────────────────
+
+load();
+</script>
+</body>
+</html>

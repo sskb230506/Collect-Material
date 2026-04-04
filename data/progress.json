@@ -1,0 +1,20 @@
+{
+  "solved": [
+    11,
+    15,
+    16,
+    18,
+    42
+  ],
+  "notes": {
+    "15": "remember things about duplicates to avoid duplicate lists in the result",
+    "18": "here we will fix two points with time complexity of O(n^3)"
+  },
+  "timestamps": {
+    "11": "2026-04-03T08:10:19.889Z",
+    "15": "2026-04-03T09:12:49.464Z",
+    "16": "2026-04-03T10:00:08.066Z",
+    "18": "2026-04-03T10:27:09.617Z",
+    "42": "2026-04-03T13:59:50.144Z"
+  }
+}
